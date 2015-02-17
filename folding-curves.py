@@ -14,15 +14,17 @@ test_data_y=(-1573.86424,-373.92125,98.63756,1930.82677,2774.18611,5095.27712,12
 R=1.98/1000
 # temperature in K for 21 C
 T=294.15
-
+p_list=['C_f','m_f','C_u','m_u','m_g','D_g']
 
 def fit_folded(x, c_f,m_f,c_u,m_u,m_g,d_g):
-#    unfold_line = c_u+m_u*x
-#    fold_line = c_f+m_f*x
-#    exp_term = exp(-(d_g-m_g*x)/(R*T))
-#    function_fit = (unfold_line +fold_line*exp_term)/(1+exp_term)
-    function_fit = (c_u+m_u*x+(c_f+m_f*x)*np.exp(-(d_g-m_g*x)/(R*T)))/(1+np.exp(-(d_g-m_g*x)/(R*T)))
+    #should x be changed to np.array? 
+    unfold_line = c_u+m_u*x
+    fold_line = c_f+m_f*x
+    exp_term = np.exp(-(d_g-m_g*x)/(R*T))
+    function_fit = (unfold_line +fold_line*exp_term)/(1+exp_term)
     return function_fit
+
+
 
 def fold_line(x, c_f,m_f,c_u,m_u,m_g,d_g):
     return c_f+m_f*x
@@ -34,13 +36,13 @@ def fold_unfold_fraction_func(x, c_m, c_f,m_f,c_u,m_u,m_g,d_g):
     exp_term=np.exp(-m_g*(c_m-x)/(R*T))
     return exp_term/(1+exp_term)
 
-def fold_unfold_fraction_data(x, y, c_f,m_f,c_u,m_u,m_g,d_g):
-    x=np.array(x)
-    y=np.array(y)
-    k_r_t=(y-(c_f+m_f*x))
-    k_r_b=((c_u+m_u*x)-y)
+def fold_unfold_fraction_data(denaturant, observed_y, c_f,m_f,c_u,m_u,m_g,d_g):
+    denaturant=np.array(denaturant)
+    observed_y=np.array(observed_y)
+    k_r_t=(observed_y-(c_f+m_f*denaturant))
+    k_r_b=((c_u+m_u*denaturant)-observed_y)
     k_r=k_r_t/k_r_b
-    return 1/(1+k_r)
+    return k_r/(1+k_r)
 
 
 
@@ -97,6 +99,18 @@ plt.legend(loc='upper left')
 plt.show()
 
 
+
+'''
+write out parameters to be printed to table
+'''
+#adds C_m to the table
+cell_text=[['C_m',np.round_(popt_fup[0],2)]
+        ]
+#adds all parameters returned from fit of data
+for i in range(len(p_list)):
+    cell_text.append([p_list[i], np.round_(popt_fu[i],2) ])
+
+
 '''
 second plot
 '''
@@ -107,6 +121,19 @@ plt.plot(xfit,fit_y_percent_fu,'r-',label='fit')
 
 #adds legend to the location upper left
 plt.legend(loc='upper left')
+
+#move plot to make room for table
+plt.subplots_adjust(right=0.5)
+
+#add labels
+plt.ylabel('Percent Unfolded')
+plt.xlabel('Denaturant (GdnHCl in M)')
+plt.title('Percent Unfolded vs Denaturant')
+
+#add table to plot on the right hand side
+
+plt.table(cellText=cell_text,loc='right')
+
 plt.show()
 
 
