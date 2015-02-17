@@ -6,6 +6,13 @@ import matplotlib.pyplot as plt
 from scipy.optimize import fsolve
 from scipy.optimize import curve_fit
 
+#features to add:
+## grab data from a csv file
+    ## change test data to data from Nall dataset?
+## clean up some formatting?
+## add comments to some code
+
+
 test_data_x=(0,0.5,0.94,1.33,1.51,1.68,1.85,2,2.15,2.29,2.42,2.55,2.67,2.78,2.89,3,3.1,3.29,3.56,3.86,4.36)
         
 test_data_y=(-1573.86424,-373.92125,98.63756,1930.82677,2774.18611,5095.27712,12323.59871,19510.18524,31674.4006,53568.05441,80023.81096,115925.6316,150256.8982,177651.9872,197236.1776,208099.1024,215700.6272,240268.0321,250882.5655,262338.8597,290747.8803)
