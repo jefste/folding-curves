@@ -26,6 +26,13 @@ def fold_line(x, c_f,m_f,c_u,m_u,m_g,d_g):
 def unfold_line(x, c_f,m_f,c_u,m_u,m_g,d_g):
     return c_u+m_u*x
 
+def fold_unfold_fraction_func(x, c_f,m_f,c_u,m_u,m_g,d_g):
+    exp_term=np.exp(-m_g*(c_m-x)/(R*T)
+    return exp_term/(1+exp_term)
+
+def fold_unfold_fraction_data(x, y, c_f,m_f,c_u,m_u,m_g,d_g):
+    k_r=(y-(c_f+m_f*x))/((c_u+m_u*x)-y)
+    return 1-k_r/(1+k_r)
 
 
 
@@ -56,9 +63,13 @@ plt.plot(test_data_x,test_data_y,'bo',label='data')
 plt.plot(xfit,fit_y,'r-',label='fit')
 
 
-
+#adds a green dashed line for the unfolded baseline
 plt.plot(xfit,unfold_line(xfit,*popt_fu),'g--',label='unfolded baseline')
+
+#adds a magenta dashed line for the folded baseline
 plt.plot(xfit,fold_line(xfit,*popt_fu),'m--',label='folded baseline')
+
+#adds legend to the location upper left
 plt.legend(loc='upper left')
 plt.show()
 
