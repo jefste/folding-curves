@@ -3,6 +3,9 @@ import scipy
 
 import matplotlib.pyplot as plt
 
+## import os,string,sys #may need this to load csv files 
+
+
 from scipy.optimize import fsolve
 from scipy.optimize import curve_fit
 
@@ -12,10 +15,15 @@ from scipy.optimize import curve_fit
 ## clean up some formatting?
 ## add comments to some code
 
-
-test_data_x=(0,0.5,0.94,1.33,1.51,1.68,1.85,2,2.15,2.29,2.42,2.55,2.67,2.78,2.89,3,3.1,3.29,3.56,3.86,4.36)
+#changed from a tuple to list for the test data, also change to numpy array
+test_data_x=np.array([0,0.5,0.94,1.33,1.51,1.68,1.85,2,2.15,2.29,2.42,2.55,2.67,2.78,2.89,3,3.1,3.29,3.56,3.86,4.36])
         
-test_data_y=(-1573.86424,-373.92125,98.63756,1930.82677,2774.18611,5095.27712,12323.59871,19510.18524,31674.4006,53568.05441,80023.81096,115925.6316,150256.8982,177651.9872,197236.1776,208099.1024,215700.6272,240268.0321,250882.5655,262338.8597,290747.8803)
+test_data_y=np.array([-1573.86424,-373.92125,98.63756,1930.82677,2774.18611,5095.27712,12323.59871,19510.18524,31674.4006,53568.05441,80023.81096,115925.6316,150256.8982,177651.9872,197236.1776,208099.1024,215700.6272,240268.0321,250882.5655,262338.8597,290747.8803])
+
+
+#normalize the data to try to have better fitting?
+#test_data_y=[item/max(test_data_y) for item in test_data_y]
+
 
 #convert to get units of cal/kmol
 R=1.98/1000
@@ -66,8 +74,8 @@ xfit=np.linspace(test_data_x[0],test_data_x[-1],1000)
 
 
 #fits data to function fit_folded, returns the parameters in popt_fu
-popt_fu,pcov_fu = curve_fit(fit_folded, test_data_x, test_data_y)
-
+popt_fu,pcov_fu = curve_fit(fit_folded, test_data_x, test_data_y,p0=[-2000,4000,83333,43333,3,7.51])
+print(popt_fu)
 #generates points for y for the fit parameters
 fit_y=fit_folded(xfit,*popt_fu)
 
