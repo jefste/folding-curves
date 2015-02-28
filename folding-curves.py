@@ -59,7 +59,15 @@ def fold_unfold_fraction_data(denaturant, observed_y, c_f,m_f,c_u,m_u,m_g,d_g):
     k_r=k_r_t/k_r_b
     return k_r/(1+k_r)
 
-
+# creates initial guesses for a given data set (x,y) for the slopes and intercepts
+def initial_parameters(x, y):
+    # use x and y to estimate the intercept and slope for the folded line
+    c_f=y[0]
+    m_f=(y[1]-y[0])/(x[1]-x[0])
+    # use the last 2 coordinates to estimate the slope of the unfolded line
+    m_u=(y[-1]-y[-2])/(x[-1]-x[-2])
+    c_u=x[-1]*m_u-y[-1]
+    return [c_f,m_f,c_u,m_u]
 
 
 #need to find method to fit and return all parameters
@@ -74,8 +82,9 @@ xfit=np.linspace(test_data_x[0],test_data_x[-1],1000)
 
 
 #fits data to function fit_folded, returns the parameters in popt_fu
-popt_fu,pcov_fu = curve_fit(fit_folded, test_data_x, test_data_y,p0=[-2000,4000,83333,43333,3,7.51])
-print(popt_fu)
+## generate the initial guess from the initial_parameters function 
+popt_fu,pcov_fu = curve_fit(fit_folded, test_data_x, test_data_y,p0=initial_parameters(test_data_x,test_data_y)+[1,1])
+
 #generates points for y for the fit parameters
 fit_y=fit_folded(xfit,*popt_fu)
 
