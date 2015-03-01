@@ -3,7 +3,7 @@ import scipy
 
 import matplotlib.pyplot as plt
 
-## import os,string,sys #may need this to load csv files 
+import os,string,sys,csv #may need this to load csv files 
 
 
 from scipy.optimize import fsolve
@@ -20,9 +20,32 @@ test_data_x=np.array([0,0.5,0.94,1.33,1.51,1.68,1.85,2,2.15,2.29,2.42,2.55,2.67,
         
 test_data_y=np.array([-1573.86424,-373.92125,98.63756,1930.82677,2774.18611,5095.27712,12323.59871,19510.18524,31674.4006,53568.05441,80023.81096,115925.6316,150256.8982,177651.9872,197236.1776,208099.1024,215700.6272,240268.0321,250882.5655,262338.8597,290747.8803])
 
+def getCSVfile():
+    x=[]
+    y=[]
+    if len(sys.argv)>1:
+        fileName=sys.argv[1]
+        if os.path.isfile(fileName):
+            with open(fileName,'rU') as csvFile:
+                reader=csv.reader(csvFile,delimiter=',')
+                for row in reader:
+                    x.append(float(row[0]))
+                    y.append(float(row[1]))
+        else:
+            print('File not found, script exiting')
+            sys.exit()
 
-#normalize the data to try to have better fitting?
-#test_data_y=[item/max(test_data_y) for item in test_data_y]
+    #test_data_x=np.array(x)
+    #test_data_y=np.array(y)
+    #print('here')
+    #print(test_data_x,test_data_y)
+    return [np.array(x),np.array(y)] 
+
+              
+
+test_data_x,test_data_y=getCSVfile()   
+
+print(test_data_x,test_data_y)
 
 
 #convert to get units of cal/kmol
@@ -63,18 +86,15 @@ def fold_unfold_fraction_data(denaturant, observed_y, c_f,m_f,c_u,m_u,m_g,d_g):
 def initial_parameters(x, y):
     # use x and y to estimate the intercept and slope for the folded line
     c_f=y[0]
-    m_f=(y[1]-y[0])/(x[1]-x[0])
+    m_f=(y[2]-y[0])/(x[2]-x[0])
     # use the last 2 coordinates to estimate the slope of the unfolded line
-    m_u=(y[-1]-y[-2])/(x[-1]-x[-2])
+    m_u=(y[-1]-y[-3])/(x[-1]-x[-3])
     c_u=x[-1]*m_u-y[-1]
     return [c_f,m_f,c_u,m_u]
 
 
-#need to find method to fit and return all parameters
-## use those parameters to generate a fit plot, fold baseline and unfold baseline
 '''
 fitting of RAW data to a folded/unfolded plot
-
 '''
 
 #make an array of 1000 points
@@ -82,7 +102,9 @@ xfit=np.linspace(test_data_x[0],test_data_x[-1],1000)
 
 
 #fits data to function fit_folded, returns the parameters in popt_fu
-## generate the initial guess from the initial_parameters function 
+## generate the initial guess from the initial_parameters function
+print('initial paramters')
+print(initial_parameters(test_data_x,test_data_y)) 
 popt_fu,pcov_fu = curve_fit(fit_folded, test_data_x, test_data_y,p0=initial_parameters(test_data_x,test_data_y)+[1,1])
 
 #generates points for y for the fit parameters
@@ -161,5 +183,10 @@ plt.table(cellText=cell_text,loc='right')
 plt.show()
 
 
+'''
+output table to console, use this for debugging
+'''
 
+for row in cell_text:
+    print row
 
