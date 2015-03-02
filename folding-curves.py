@@ -180,11 +180,64 @@ plt.title('Percent Unfolded vs Denaturant')
 #add table to plot on the right hand side
 
 table_plot=plt.table(cellText=cell_text,loc='right')
+#increase the font size of the table
 table_plot.set_fontsize(24)
+#increase the size of the plot (1 for horizontal, 4 for vertical)
 table_plot.scale(1,4)
 
 
 plt.show()
+
+'''
+Third plot, One plot containing all info
+'''
+
+
+
+
+fig,((ax1,ax2,ax3))= plt.subplots(nrows=1,ncols=3)
+
+#plot data
+ax1.plot(test_data_x,test_data_y,'bo',label='data')
+#plot fit
+ax1.plot(xfit,fit_y,'r-',label='fit')
+
+
+#adds a green dashed line for the unfolded baseline
+ax1.plot(xfit,unfold_line(xfit,*popt_fu),'g--',label='unfolded baseline')
+#adds a magenta dashed line for the folded baseline
+ax1.plot(xfit,fold_line(xfit,*popt_fu),'m--',label='folded baseline')
+
+#adds legend to the location upper left
+ax1.legend(loc='upper left')
+
+ax1.axes.set_ylabel('Observed Parameter')
+ax1.axes.set_xlabel('Denaturant (GdnHCl in M)')
+ax1.axes.set_title('Observed Parameter vs Denaturant')
+
+
+#second plot with lables and legend
+ax2.plot(test_data_x,test_data_y_percent_fu,'bo',label='data')
+ax2.plot(xfit,fit_y_percent_fu,'r-',label='fit')
+ax2.legend(loc='upper left')
+ax2.axes.set_ylabel('Percent Unfolded')
+ax2.axes.set_xlabel('Denaturant (GdnHCl in M)')
+ax2.axes.set_title('Percent Unfolded vs Denaturant')
+
+
+#third 'plot', is just the table, but hides the x and y labels since they aren't needed
+ax3.table(cellText=cell_text,loc='center').scale(1,4)
+ax3.axes.get_yaxis().set_visible(False)
+ax3.axes.get_xaxis().set_visible(False)
+ax3.axes.set_title('Fitting parameters')
+
+
+# gives too much padding, maybe some way to tweak this?
+#plt.tight_layout()
+plt.show()
+
+
+
 
 
 '''
