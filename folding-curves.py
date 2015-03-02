@@ -129,6 +129,9 @@ fit_y_percent_fu=fold_unfold_fraction_func(xfit,*popt_fup)
 '''
 first plot
 '''
+#add gridlines to plot
+plt.grid(b=True, which='both',color='0.5',linestyle='-',alpha=.3)
+
 #plot data
 plt.plot(test_data_x,test_data_y,'bo',label='data')
 #plot fit
@@ -143,6 +146,11 @@ plt.plot(xfit,fold_line(xfit,*popt_fu),'m--',label='folded baseline')
 
 #adds legend to the location upper left
 plt.legend(loc='upper left')
+
+
+#add gridlines to plot
+plt.grid(b=True, which='both',color='0.5',linestyle='-',alpha=.3)
+
 plt.show()
 
 
@@ -186,6 +194,9 @@ table_plot.set_fontsize(24)
 table_plot.scale(1,4)
 
 
+#add gridlines to plot
+plt.grid(b=True, which='both',color='0.5',linestyle='-',alpha=.3)
+
 plt.show()
 
 '''
@@ -215,6 +226,8 @@ ax1.axes.set_ylabel('Observed Parameter')
 ax1.axes.set_xlabel('Denaturant (GdnHCl in M)')
 ax1.axes.set_title('Observed Parameter vs Denaturant')
 
+#add gridlines to plot
+ax1.grid(b=True, which='both',color='0.5',linestyle='-',alpha=.3)
 
 #second plot with lables and legend
 ax2.plot(test_data_x,test_data_y_percent_fu,'bo',label='data')
@@ -224,6 +237,8 @@ ax2.axes.set_ylabel('Percent Unfolded')
 ax2.axes.set_xlabel('Denaturant (GdnHCl in M)')
 ax2.axes.set_title('Percent Unfolded vs Denaturant')
 
+#add gridlines to plot
+ax2.grid(b=True, which='both',color='0.5',linestyle='-',alpha=.3)
 
 #third 'plot', is just the table, but hides the x and y labels since they aren't needed
 ax3.table(cellText=cell_text,loc='center').scale(1,4)
