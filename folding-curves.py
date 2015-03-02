@@ -79,10 +79,10 @@ def fold_unfold_fraction_func(x, c_m, c_f,m_f,c_u,m_u,m_g,d_g):
 def fold_unfold_fraction_data(denaturant, observed_y, c_f,m_f,c_u,m_u,m_g,d_g):
     denaturant=np.array(denaturant)
     observed_y=np.array(observed_y)
-    k_r_t=(observed_y-(c_f+m_f*denaturant))
-    k_r_b=((c_u+m_u*denaturant)-observed_y)
+    k_r_t=(observed_y-(c_u+m_u*denaturant))
+    k_r_b=((c_f+m_f*denaturant)-observed_y)
     k_r=k_r_t/k_r_b
-    return k_r/(1+k_r)
+    return 1-k_r/(1+k_r)
 
 # creates initial guesses for a given data set (x,y) for the slopes and intercepts
 def initial_parameters(x, y):
