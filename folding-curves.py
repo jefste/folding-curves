@@ -107,7 +107,7 @@ xfit=np.linspace(test_data_x[0],test_data_x[-1],1000)
 ## generate the initial guess from the initial_parameters function
 print('initial paramters')
 print(initial_parameters(test_data_x,test_data_y)) 
-popt_fu,pcov_fu = curve_fit(fit_folded, test_data_x, test_data_y,p0=initial_parameters(test_data_x,test_data_y)+[1,1])
+popt_fu,pcov_fu = curve_fit(fit_folded, test_data_x, test_data_y,p0=initial_parameters(test_data_x,test_data_y)+[3,5])
 
 #generates points for y for the fit parameters
 fit_y=fit_folded(xfit,*popt_fu)
