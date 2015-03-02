@@ -38,10 +38,7 @@ def getCSVfile():
         print('using data already loaded in routine')
         x=test_data_x
         y=test_data_y
-    #test_data_x=np.array(x)
-    #test_data_y=np.array(y)
-    #print('here')
-    #print(test_data_x,test_data_y)
+    
     return [np.array(x),np.array(y)] 
 
 '''
