@@ -44,12 +44,14 @@ def getCSVfile():
     #print(test_data_x,test_data_y)
     return [np.array(x),np.array(y)] 
 
-              
-
+'''
+Reads data from specified csv file
+'''
 test_data_x,test_data_y=getCSVfile()   
 
-print(test_data_x,test_data_y)
-
+'''
+definition of functions
+'''
 
 #convert to get units of cal/kmol
 R=1.98/1000
