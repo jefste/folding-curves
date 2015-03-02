@@ -15,10 +15,15 @@ from scipy.optimize import curve_fit
 ## clean up some formatting?
 ## add comments to some code
 
-#changed from a tuple to list for the test data, also change to numpy array
 test_data_x=np.array([0,0.5,0.94,1.33,1.51,1.68,1.85,2,2.15,2.29,2.42,2.55,2.67,2.78,2.89,3,3.1,3.29,3.56,3.86,4.36])
         
 test_data_y=np.array([-1573.86424,-373.92125,98.63756,1930.82677,2774.18611,5095.27712,12323.59871,19510.18524,31674.4006,53568.05441,80023.81096,115925.6316,150256.8982,177651.9872,197236.1776,208099.1024,215700.6272,240268.0321,250882.5655,262338.8597,290747.8803])
+
+
+'''
+definition of functions
+'''
+#reads file that is specified as the argument after folding-curves, otherwise uses the data found above
 
 def getCSVfile():
     x=[]
@@ -41,15 +46,6 @@ def getCSVfile():
     
     return [np.array(x),np.array(y)] 
 
-'''
-Reads data from specified csv file
-'''
-test_data_x,test_data_y=getCSVfile()   
-
-'''
-definition of functions
-'''
-
 #convert to get units of cal/kmol
 R=1.98/1000
 # temperature in K for 21 C
@@ -63,8 +59,6 @@ def fit_folded(x, c_f,m_f,c_u,m_u,m_g,d_g):
     exp_term = np.exp(-(d_g-m_g*x)/(R*T))
     function_fit = (fold_line +unfold_line*exp_term)/(1+exp_term)
     return function_fit
-
-
 
 def fold_line(x, c_f,m_f,c_u,m_u,m_g,d_g):
     return c_f+m_f*x
@@ -93,6 +87,11 @@ def initial_parameters(x, y):
     m_u=(y[-1]-y[-3])/(x[-1]-x[-3])
     c_u=x[-1]*m_u-y[-1]
     return [c_f,m_f,c_u,m_u]
+
+'''
+Reads data from specified csv file
+'''
+test_data_x,test_data_y=getCSVfile()   
 
 
 '''
@@ -180,7 +179,10 @@ plt.title('Percent Unfolded vs Denaturant')
 
 #add table to plot on the right hand side
 
-plt.table(cellText=cell_text,loc='right')
+table_plot=plt.table(cellText=cell_text,loc='right')
+table_plot.set_fontsize(24)
+table_plot.scale(1,4)
+
 
 plt.show()
 
