@@ -61,7 +61,7 @@ def fit_folded(x, c_f,m_f,c_u,m_u,m_g,d_g):
     unfold_line = c_u+m_u*x
     fold_line = c_f+m_f*x
     exp_term = np.exp(-(d_g-m_g*x)/(R*T))
-    function_fit = (unfold_line +fold_line*exp_term)/(1+exp_term)
+    function_fit = (fold_line +unfold_line*exp_term)/(1+exp_term)
     return function_fit
 
 
