@@ -211,6 +211,8 @@ Third plot, One plot containing all info
 #change the size of the figure, and the size of the font on the figure.
 rcParams['figure.figsize'] = 20, 7
 rcParams['font.size'] = 14
+#change font size of legend, as it was clipping the fit data
+rcParams['legend.fontsize'] = 12
 
 
 fig,((ax1,ax2,ax3))= plt.subplots(nrows=1,ncols=3)
@@ -269,3 +271,22 @@ output table to console, use this for debugging
 for row in cell_text:
     print row
 
+
+'''
+save file as csv
+
+def writeToCSV():
+    raw_input('Save fit and parameters to csv files? (y/n)')
+    
+    #checks to see if the path and the file name exists. 
+    #Is this redunant? Maybe only need to check for file exisiting?
+    #Note that when checking exists or isfile, the function does not appear to be case dependant
+        if os.path.exists(pathnamePDB) and os.path.isfile(pathnamePDB):
+
+
+with open('fit_CSV/eggs.csv', 'wb') as csvfile:
+    spamwriter = csv.writer(csvfile, delimiter=' ',
+                            quotechar='|', quoting=csv.QUOTE_MINIMAL)
+    spamwriter.writerow(['Spam'] * 5 + ['Baked Beans'])
+    spamwriter.writerow(['Spam', 'Lovely Spam', 'Wonderful Spam'])
+'''
