@@ -283,20 +283,27 @@ def writeToCSV():
     #Note that when checking exists or isfile, the function does not appear to be case dependant
         if os.path.exists(pathnamePDB) and os.path.isfile(pathnamePDB):
 
-'''
-with open('fit_CSVs/test_data'+'_parameters.csv', 'wb') as csvfile:
-    datawriter = csv.writer(csvfile, delimiter=',')
-    for row in cell_text:
-        datawriter.writerow(row)
 
-with open('fit_CSVs/test_data'+'_fits.csv', 'wb') as csvfile:
-    datawriter = csv.writer(csvfile, delimiter=',')
-    for i in range(len(xfit)):
-        datawriter.writerow([xfit[i],fit_y[i]])
+
+saves data to 3 separate files: paramters, fit curves, and data converted to perecnet unfolded
 
 '''
-ax2.plot(test_data_x,test_data_y_percent_fu,'bo',label='data')
-ax2.plot(xfit,fit_y_percent_fu,'r-',label='fit')
-ax1.plot(test_data_x,test_data_y,'bo',label='data')
-xfit,fit_y
-'''
+
+answer=raw_input('Save fit and parameters to csv files (y/n)? ')
+if answer=='y':
+    with open('fit_CSVs/test_data'+'_parameters.csv', 'wb') as csvfile:
+        datawriter = csv.writer(csvfile, delimiter=',')
+        for row in cell_text:
+            datawriter.writerow(row)
+
+    with open('fit_CSVs/test_data'+'_fits.csv', 'wb') as csvfile:
+        datawriter = csv.writer(csvfile, delimiter=',')
+        for i in range(len(xfit)):
+            datawriter.writerow([xfit[i],fit_y[i],fit_y_percent_fu[i]])
+
+    with open('fit_CSVs/test_data'+'_data_percent_unfolded.csv', 'wb') as csvfile:
+        datawriter = csv.writer(csvfile, delimiter=',')
+        for i in range(len(test_data_x)):
+            datawriter.writerow([test_data_x[i],test_data_y_percent_fu[i],test_data_y[i]])
+
+
