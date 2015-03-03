@@ -283,10 +283,20 @@ def writeToCSV():
     #Note that when checking exists or isfile, the function does not appear to be case dependant
         if os.path.exists(pathnamePDB) and os.path.isfile(pathnamePDB):
 
+'''
+with open('fit_CSVs/test_data'+'_parameters.csv', 'wb') as csvfile:
+    datawriter = csv.writer(csvfile, delimiter=',')
+    for row in cell_text:
+        datawriter.writerow(row)
 
-with open('fit_CSV/eggs.csv', 'wb') as csvfile:
-    spamwriter = csv.writer(csvfile, delimiter=' ',
-                            quotechar='|', quoting=csv.QUOTE_MINIMAL)
-    spamwriter.writerow(['Spam'] * 5 + ['Baked Beans'])
-    spamwriter.writerow(['Spam', 'Lovely Spam', 'Wonderful Spam'])
+with open('fit_CSVs/test_data'+'_fits.csv', 'wb') as csvfile:
+    datawriter = csv.writer(csvfile, delimiter=',')
+    for i in range(len(xfit)):
+        datawriter.writerow([xfit[i],fit_y[i]])
+
+'''
+ax2.plot(test_data_x,test_data_y_percent_fu,'bo',label='data')
+ax2.plot(xfit,fit_y_percent_fu,'r-',label='fit')
+ax1.plot(test_data_x,test_data_y,'bo',label='data')
+xfit,fit_y
 '''
