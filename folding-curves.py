@@ -2,6 +2,8 @@ import numpy as np
 import scipy
 
 import matplotlib.pyplot as plt
+import pylab as pl #use this for resizing figures
+from pylab import rcParams #use for resizing figures
 
 import os,string,sys,csv #may need this to load csv files 
 
@@ -151,6 +153,8 @@ plt.legend(loc='upper left')
 #add gridlines to plot
 plt.grid(b=True, which='both',color='0.5',linestyle='-',alpha=.3)
 
+
+
 plt.show()
 
 
@@ -204,6 +208,9 @@ Third plot, One plot containing all info
 '''
 
 
+#change the size of the figure, and the size of the font on the figure.
+rcParams['figure.figsize'] = 20, 7
+rcParams['font.size'] = 14
 
 
 fig,((ax1,ax2,ax3))= plt.subplots(nrows=1,ncols=3)
