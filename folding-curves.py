@@ -131,6 +131,8 @@ fit_y_percent_fu=fold_unfold_fraction_func(xfit,*popt_fup)
 '''
 first plot
 '''
+'''
+COMMENTING OUT SECOND PLOT, ONLY USING 3rd plot
 #add gridlines to plot
 plt.grid(b=True, which='both',color='0.5',linestyle='-',alpha=.3)
 
@@ -156,7 +158,7 @@ plt.grid(b=True, which='both',color='0.5',linestyle='-',alpha=.3)
 
 
 plt.show()
-
+'''
 
 
 '''
@@ -173,6 +175,9 @@ for i in range(len(p_list)):
 '''
 second plot
 '''
+
+'''
+COMMENTING OUT SECOND PLOT, ONLY USING 3rd plot
 #plot data
 plt.plot(test_data_x,test_data_y_percent_fu,'bo',label='data')
 #plot fit
@@ -202,6 +207,9 @@ table_plot.scale(1,4)
 plt.grid(b=True, which='both',color='0.5',linestyle='-',alpha=.3)
 
 plt.show()
+'''
+
+
 
 '''
 Third plot, One plot containing all info
