@@ -6,8 +6,8 @@ fluorescence.
 # Background 
 Folding curves for folding and unfolding using a two state model. For more information on the two-state model, read the following papers:
 
- 1. Unfolding free energy changes determined by the linear extrapolation method. 1. Unfolding of phenylmethanesulfonyl .alpha.-chymotrypsin using different denaturants. Marcelo M. Santoro , D. W. Bolen, Biochemistry, 1988, 27 (21), pp 8063–8068, DOI: 10.1021/bi00421a014
- 2. Folding of horse cytochrome c in the reduced state. Bhuyan AK, Udgaonkar JB, J Mol Biol. 2001 Oct 5;312(5):1135-60.
+ 1. "Unfolding free energy changes determined by the linear extrapolation method. 1. Unfolding of phenylmethanesulfonyl .alpha.-chymotrypsin using different denaturants." Marcelo M. Santoro , D. W. Bolen, Biochemistry, 1988, 27 (21), pp 8063–8068, DOI: 10.1021/bi00421a014
+ 2. "Folding of horse cytochrome c in the reduced state." Bhuyan AK, Udgaonkar JB, J Mol Biol. 2001 Oct 5;312(5):1135-60.
 
 ## Equations 
 There is a discrepancy between several publications for the folding equetion.
