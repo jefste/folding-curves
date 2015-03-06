@@ -296,22 +296,27 @@ def writeToCSV():
 saves data to 3 separate files: paramters, fit curves, and data converted to perecnet unfolded
 
 '''
+def save_to_CSV(sample_name):
+    answer=raw_input('Save fit and parameters to csv files (y/n)? ')
+    if answer=='y':
+        with open('fit_CSVs/'+sample_name+'_parameters.csv', 'wb') as csvfile:
+            datawriter = csv.writer(csvfile, delimiter=',')
+            for row in cell_text:
+                datawriter.writerow(row)
 
-answer=raw_input('Save fit and parameters to csv files (y/n)? ')
-if answer=='y':
-    with open('fit_CSVs/test_data'+'_parameters.csv', 'wb') as csvfile:
-        datawriter = csv.writer(csvfile, delimiter=',')
-        for row in cell_text:
-            datawriter.writerow(row)
+        with open('fit_CSVs/'+sample_name+'_fits.csv', 'wb') as csvfile:
+            datawriter = csv.writer(csvfile, delimiter=',')
+            for i in range(len(xfit)):
+                datawriter.writerow([xfit[i],fit_y[i],fit_y_percent_fu[i]])
 
-    with open('fit_CSVs/test_data'+'_fits.csv', 'wb') as csvfile:
-        datawriter = csv.writer(csvfile, delimiter=',')
-        for i in range(len(xfit)):
-            datawriter.writerow([xfit[i],fit_y[i],fit_y_percent_fu[i]])
-
-    with open('fit_CSVs/test_data'+'_data_percent_unfolded.csv', 'wb') as csvfile:
-        datawriter = csv.writer(csvfile, delimiter=',')
-        for i in range(len(test_data_x)):
-            datawriter.writerow([test_data_x[i],test_data_y_percent_fu[i],test_data_y[i]])
+        with open('fit_CSVs/'+sample_name+'_data_percent_unfolded.csv', 'wb') as csvfile:
+            datawriter = csv.writer(csvfile, delimiter=',')
+            for i in range(len(test_data_x)):
+                datawriter.writerow([test_data_x[i],test_data_y_percent_fu[i],test_data_y[i]])
 
 
+if len(sys.argv)>1:
+    #split ext then calling for [0] index gives the name of the specified file without the file extension
+    save_to_CSV(os.path.splitext(sys.argv[1])[0])
+else:
+    save_to_CSV('test_data')
