@@ -5,16 +5,15 @@ import matplotlib.pyplot as plt
 import pylab as pl #use this for resizing figures
 from pylab import rcParams #use for resizing figures
 
-import os,string,sys,csv #may need this to load csv files 
+import os,string,sys,csv #need this to load csv files 
 
 
 from scipy.optimize import curve_fit
 
 #features to add:
-## grab data from a csv file
     ## change test data to data from Nall dataset?
-## clean up some formatting?
-## add comments to some code
+    ## clean up some formatting?
+    ## add comments to some code
 
 #create dictionary where all x,y data will be stored for plots
 data_all={}
@@ -77,6 +76,10 @@ def fit_folded(x, c_f,m_f,c_u,m_u,m_g,d_g):
     exp_term = np.exp(-(d_g-m_g*x)/(R*T))
     function_fit = (fold_line +unfold_line*exp_term)/(1+exp_term)
     return function_fit
+
+# have all parameters since they end up getting unpacked from the returned fitting parameters. 
+# Is there a way to do this to make it clearer (have less parameters to read in)? 
+# perhaps use a dictionary and just pass the dictionary in?
 
 def fold_line(x, c_f,m_f,c_u,m_u,m_g,d_g):
     return c_f+m_f*x
