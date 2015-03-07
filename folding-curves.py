@@ -17,6 +17,8 @@ from scipy.optimize import curve_fit
 ## clean up some formatting?
 ## add comments to some code
 
+data_all={}
+
 test_data_x=np.array([0,0.5,0.94,1.33,1.51,1.68,1.85,2,2.15,2.29,2.42,2.55,2.67,2.78,2.89,3,3.1,3.29,3.56,3.86,4.36])
         
 test_data_y=np.array([-1573.86424,-373.92125,98.63756,1930.82677,2774.18611,5095.27712,12323.59871,19510.18524,31674.4006,53568.05441,80023.81096,115925.6316,150256.8982,177651.9872,197236.1776,208099.1024,215700.6272,240268.0321,250882.5655,262338.8597,290747.8803])
@@ -93,38 +95,37 @@ def initial_parameters(x, y):
 '''
 Reads data from specified csv file
 '''
-test_data_x,test_data_y=getCSVfile()   
-
+data_all['x_raw'],data_all['y_raw']=getCSVfile()   
 
 '''
 fitting of RAW data to a folded/unfolded plot
 '''
 
 #make an array of 1000 points
-xfit=np.linspace(test_data_x[0],test_data_x[-1],1000)
+data_all['xfit']=np.linspace(data_all['x_raw'][0],data_all['x_raw'][-1],1000)
 
 
 #fits data to function fit_folded, returns the parameters in popt_fu
 ## generate the initial guess from the initial_parameters function
 print('initial paramters')
 print(initial_parameters(test_data_x,test_data_y)) 
-popt_fu,pcov_fu = curve_fit(fit_folded, test_data_x, test_data_y,p0=initial_parameters(test_data_x,test_data_y)+[3,5])
+popt_fu,pcov_fu = curve_fit(fit_folded, data_all['x_raw'], data_all['y_raw'],p0=initial_parameters(data_all['x_raw'],data_all['y_raw'])+[3,5])
 
 #generates points for y for the fit parameters
-fit_y=fit_folded(xfit,*popt_fu)
+data_all['y_fit_raw']=fit_folded(data_all['xfit'],*popt_fu)
 
 '''
 Converted data
 '''
 #converts the raw data to percentage data
 ## currently having an issue on this
-test_data_y_percent_fu=fold_unfold_fraction_data(test_data_x,test_data_y,*popt_fu)
+data_all['y_data_percent_unfold']=fold_unfold_fraction_data(data_all['x_raw'],data_all['y_raw'],*popt_fu)
 
 #fits data to fold_unfold_fraction_func
-popt_fup,pcov_fup = curve_fit(fold_unfold_fraction_func, test_data_x, test_data_y_percent_fu)
+popt_fup,pcov_fup = curve_fit(fold_unfold_fraction_func, data_all['x_raw'], data_all['y_data_percent_unfold'])
 
 #generates points for y from the fit parameters for the percent unfolded curve
-fit_y_percent_fu=fold_unfold_fraction_func(xfit,*popt_fup)
+data_all['y_fit_percent_unfold']=fold_unfold_fraction_func(data_all['xfit'],*popt_fup)
 
 
 
@@ -226,15 +227,15 @@ rcParams['legend.fontsize'] = 12
 fig,((ax1,ax2,ax3))= plt.subplots(nrows=1,ncols=3)
 
 #plot data
-ax1.plot(test_data_x,test_data_y,'bo',label='data')
+ax1.plot(data_all['x_raw'],data_all['y_raw'],'bo',label='data')
 #plot fit
-ax1.plot(xfit,fit_y,'r-',label='fit')
+ax1.plot(data_all['xfit'],data_all['y_fit_raw'],'r-',label='fit')
 
 
 #adds a green dashed line for the unfolded baseline
-ax1.plot(xfit,unfold_line(xfit,*popt_fu),'g--',label='unfolded baseline')
+ax1.plot(data_all['xfit'],unfold_line(data_all['xfit'],*popt_fu),'g--',label='unfolded baseline')
 #adds a magenta dashed line for the folded baseline
-ax1.plot(xfit,fold_line(xfit,*popt_fu),'m--',label='folded baseline')
+ax1.plot(data_all['xfit'],fold_line(data_all['xfit'],*popt_fu),'m--',label='folded baseline')
 
 #adds legend to the location upper left
 ax1.legend(loc='upper left')
@@ -247,8 +248,8 @@ ax1.axes.set_title('Observed Parameter vs Denaturant')
 ax1.grid(b=True, which='both',color='0.5',linestyle='-',alpha=.3)
 
 #second plot with lables and legend
-ax2.plot(test_data_x,test_data_y_percent_fu,'bo',label='data')
-ax2.plot(xfit,fit_y_percent_fu,'r-',label='fit')
+ax2.plot(data_all['x_raw'],data_all['y_data_percent_unfold'],'bo',label='data')
+ax2.plot(data_all['xfit'],data_all['y_fit_percent_unfold'],'r-',label='fit')
 ax2.legend(loc='upper left')
 ax2.axes.set_ylabel('Percent Unfolded')
 ax2.axes.set_xlabel('Denaturant (GdnHCl in M)')
