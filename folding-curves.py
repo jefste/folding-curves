@@ -129,38 +129,6 @@ data_all['y_fit_percent_unfold']=fold_unfold_fraction_func(data_all['xfit'],*pop
 
 
 
-'''
-first plot
-'''
-'''
-COMMENTING OUT SECOND PLOT, ONLY USING 3rd plot
-#add gridlines to plot
-plt.grid(b=True, which='both',color='0.5',linestyle='-',alpha=.3)
-
-#plot data
-plt.plot(test_data_x,test_data_y,'bo',label='data')
-#plot fit
-plt.plot(xfit,fit_y,'r-',label='fit')
-
-
-#adds a green dashed line for the unfolded baseline
-plt.plot(xfit,unfold_line(xfit,*popt_fu),'g--',label='unfolded baseline')
-
-#adds a magenta dashed line for the folded baseline
-plt.plot(xfit,fold_line(xfit,*popt_fu),'m--',label='folded baseline')
-
-#adds legend to the location upper left
-plt.legend(loc='upper left')
-
-
-#add gridlines to plot
-plt.grid(b=True, which='both',color='0.5',linestyle='-',alpha=.3)
-
-
-
-plt.show()
-'''
-
 
 '''
 write out parameters to be printed to table
@@ -172,43 +140,6 @@ cell_text=[['C_m',np.round_(popt_fup[0],2)]
 for i in range(len(p_list)):
     cell_text.append([p_list[i], np.round_(popt_fu[i],2) ])
 
-
-'''
-second plot
-'''
-
-'''
-COMMENTING OUT SECOND PLOT, ONLY USING 3rd plot
-#plot data
-plt.plot(test_data_x,test_data_y_percent_fu,'bo',label='data')
-#plot fit
-plt.plot(xfit,fit_y_percent_fu,'r-',label='fit')
-
-#adds legend to the location upper left
-plt.legend(loc='upper left')
-
-#move plot to make room for table
-plt.subplots_adjust(right=0.5)
-
-#add labels
-plt.ylabel('Percent Unfolded')
-plt.xlabel('Denaturant (GdnHCl in M)')
-plt.title('Percent Unfolded vs Denaturant')
-
-#add table to plot on the right hand side
-
-table_plot=plt.table(cellText=cell_text,loc='right')
-#increase the font size of the table
-table_plot.set_fontsize(24)
-#increase the size of the plot (1 for horizontal, 4 for vertical)
-table_plot.scale(1,4)
-
-
-#add gridlines to plot
-plt.grid(b=True, which='both',color='0.5',linestyle='-',alpha=.3)
-
-plt.show()
-'''
 
 
 
@@ -283,17 +214,10 @@ for row in cell_text:
 
 '''
 save file as csv
-
-def writeToCSV():
-    raw_input('Save fit and parameters to csv files? (y/n)')
-    
-    #checks to see if the path and the file name exists. 
-    #Is this redunant? Maybe only need to check for file exisiting?
-    #Note that when checking exists or isfile, the function does not appear to be case dependant
-        if os.path.exists(pathnamePDB) and os.path.isfile(pathnamePDB):
+'''
 
 
-
+'''
 saves data to 3 separate files: paramters, fit curves, and data converted to perecnet unfolded
 
 '''
