@@ -8,7 +8,6 @@ from pylab import rcParams #use for resizing figures
 import os,string,sys,csv #may need this to load csv files 
 
 
-from scipy.optimize import fsolve
 from scipy.optimize import curve_fit
 
 #features to add:
