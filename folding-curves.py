@@ -17,11 +17,33 @@ from scipy.optimize import curve_fit
 ## clean up some formatting?
 ## add comments to some code
 
+#create dictionary where all x,y data will be stored for plots
 data_all={}
 
+'''
+Constants used in fitting routine
+'''
+#convert to get units of cal/kmol
+R=1.98/1000
+# temperature in K for 21 C
+T=294.15
+
+'''
+Parameter list used to write out final fitting table
+'''
+p_list=['C_f','m_f','C_u','m_u','m_g','D_g']
+
+
+'''
+Default data
+
+data to be used if no CSV file is specified
+'''
 test_data_x=np.array([0,0.5,0.94,1.33,1.51,1.68,1.85,2,2.15,2.29,2.42,2.55,2.67,2.78,2.89,3,3.1,3.29,3.56,3.86,4.36])
-        
-test_data_y=np.array([-1573.86424,-373.92125,98.63756,1930.82677,2774.18611,5095.27712,12323.59871,19510.18524,31674.4006,53568.05441,80023.81096,115925.6316,150256.8982,177651.9872,197236.1776,208099.1024,215700.6272,240268.0321,250882.5655,262338.8597,290747.8803])
+ 
+test_data_y=np.array([-1573.86424,-373.92125,98.63756,1930.82677,2774.18611,5095.27712,12323.59871,19510.18524,
+    31674.4006,53568.05441,80023.81096,115925.6316,150256.8982,177651.9872,197236.1776,208099.1024,215700.6272,
+    240268.0321,250882.5655,262338.8597,290747.8803])
 
 
 '''
@@ -47,17 +69,10 @@ def getCSVfile():
         print('using data already loaded in routine')
         x=test_data_x
         y=test_data_y
-    
+    #convert x and y as numpy arrays
     return [np.array(x),np.array(y)] 
 
-#convert to get units of cal/kmol
-R=1.98/1000
-# temperature in K for 21 C
-T=294.15
-p_list=['C_f','m_f','C_u','m_u','m_g','D_g']
-
 def fit_folded(x, c_f,m_f,c_u,m_u,m_g,d_g):
-    #should x be changed to np.array? 
     unfold_line = c_u+m_u*x
     fold_line = c_f+m_f*x
     exp_term = np.exp(-(d_g-m_g*x)/(R*T))
@@ -87,15 +102,13 @@ def initial_parameters(x, y):
     # use x and y to estimate the intercept and slope for the folded line
     c_f=y[0]
     m_f=(y[2]-y[0])/(x[2]-x[0])
-    # use the last 2 coordinates to estimate the slope of the unfolded line
+    # use coordinates near the end of the array to estimate the slope of the unfolded line
     m_u=(y[-1]-y[-3])/(x[-1]-x[-3])
     c_u=x[-1]*m_u-y[-1]
     return [c_f,m_f,c_u,m_u]
 
-'''
-saves data to 3 separate files: paramters, fit curves, and data converted to perecnet unfolded
 
-'''
+#saves data to 3 separate files: paramters, fit curves, and data converted to perecnet unfolded
 def save_to_CSV(sample_name,data):
     answer=raw_input('Save fit and parameters to csv files (y/n)? ')
     if answer=='y':
