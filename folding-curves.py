@@ -321,6 +321,6 @@ def save_to_CSV(sample_name,data):
 
 if len(sys.argv)>1:
     #split ext then calling for [0] index gives the name of the specified file without the file extension
-    save_to_CSV(os.path.splitext(sys.argv[1])[0])
+    save_to_CSV(os.path.splitext(sys.argv[1])[0],data_all)
 else:
-    save_to_CSV('test_data')
+    save_to_CSV('test_data',data_all)
