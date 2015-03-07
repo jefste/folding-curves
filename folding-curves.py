@@ -121,7 +121,7 @@ Reads data from specified csv file
 data_all['x_raw'],data_all['y_raw']=getCSVfile()   
 
 '''
-fitting of RAW data to a folded/unfolded plot
+fitting of RAW data to a folded/unfolded curve 
 '''
 
 #make an array of 1000 points
@@ -138,10 +138,9 @@ popt_fu,pcov_fu = curve_fit(fit_folded, data_all['x_raw'], data_all['y_raw'],p0=
 data_all['y_fit_raw']=fit_folded(data_all['xfit'],*popt_fu)
 
 '''
-Converted data
+Convert data to a measure of percentage unfolded
 '''
 #converts the raw data to percentage data
-## currently having an issue on this
 data_all['y_data_percent_unfold']=fold_unfold_fraction_data(data_all['x_raw'],data_all['y_raw'],*popt_fu)
 
 #fits data to fold_unfold_fraction_func
@@ -149,8 +148,6 @@ popt_fup,pcov_fup = curve_fit(fold_unfold_fraction_func, data_all['x_raw'], data
 
 #generates points for y from the fit parameters for the percent unfolded curve
 data_all['y_fit_percent_unfold']=fold_unfold_fraction_func(data_all['xfit'],*popt_fup)
-
-
 
 
 '''
@@ -164,12 +161,9 @@ for i in range(len(p_list)):
     cell_text.append([p_list[i], np.round_(popt_fu[i],2) ])
 
 
-
-
 '''
 2 plots and one table, plotted in one figure 
 '''
-
 
 #change the size of the figure, and the size of the font on the figure.
 rcParams['figure.figsize'] = 20, 7
@@ -224,9 +218,6 @@ ax3.axes.set_title('Fitting parameters')
 plt.show()
 
 
-
-
-
 '''
 output table to console, use this for debugging
 '''
@@ -238,8 +229,6 @@ for row in cell_text:
 '''
 save file as csv
 '''
-
-
 
 if len(sys.argv)>1:
     #split ext then calling for [0] index gives the name of the specified file without the file extension
