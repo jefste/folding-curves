@@ -93,6 +93,29 @@ def initial_parameters(x, y):
     return [c_f,m_f,c_u,m_u]
 
 '''
+saves data to 3 separate files: paramters, fit curves, and data converted to perecnet unfolded
+
+'''
+def save_to_CSV(sample_name,data):
+    answer=raw_input('Save fit and parameters to csv files (y/n)? ')
+    if answer=='y':
+        with open('fit_CSVs/'+sample_name+'_parameters.csv', 'wb') as csvfile:
+            datawriter = csv.writer(csvfile, delimiter=',')
+            for row in cell_text:
+                datawriter.writerow(row)
+
+        with open('fit_CSVs/'+sample_name+'_fits.csv', 'wb') as csvfile:
+            datawriter = csv.writer(csvfile, delimiter=',')
+            for i in range(len(data['xfit'])):
+                datawriter.writerow([data['xfit'][i],data['y_fit_raw'][i],data['y_fit_percent_unfold'][i]])
+
+        with open('fit_CSVs/'+sample_name+'_data_percent_unfolded.csv', 'wb') as csvfile:
+            datawriter = csv.writer(csvfile, delimiter=',')
+            for i in range(len(data['x_raw'])):
+                datawriter.writerow([data['x_raw'][i],data['y_data_percent_unfold'][i],data['y_raw'][i]])
+
+
+'''
 Reads data from specified csv file
 '''
 data_all['x_raw'],data_all['y_raw']=getCSVfile()   
@@ -144,7 +167,7 @@ for i in range(len(p_list)):
 
 
 '''
-Third plot, One plot containing all info
+2 plots and one table, plotted in one figure 
 '''
 
 
@@ -216,31 +239,6 @@ for row in cell_text:
 save file as csv
 '''
 
-
-'''
-saves data to 3 separate files: paramters, fit curves, and data converted to perecnet unfolded
-
-'''
-def save_to_CSV(sample_name,data):
-    answer=raw_input('Save fit and parameters to csv files (y/n)? ')
-    if answer=='y':
-        data['xfit'][i],data['y_fit_raw'][i],data['y_fit_unfold'][i]
-        data['x_raw'][i],data['y_data_percent_unfold'][i],data['y_raw'][i]
-        
-        with open('fit_CSVs/'+sample_name+'_parameters.csv', 'wb') as csvfile:
-            datawriter = csv.writer(csvfile, delimiter=',')
-            for row in cell_text:
-                datawriter.writerow(row)
-
-        with open('fit_CSVs/'+sample_name+'_fits.csv', 'wb') as csvfile:
-            datawriter = csv.writer(csvfile, delimiter=',')
-            for i in range(len(data['xfit'])):
-                datawriter.writerow([data['xfit'][i],data['y_fit_raw'][i],data['y_fit_unfold'][i]])
-
-        with open('fit_CSVs/'+sample_name+'_data_percent_unfolded.csv', 'wb') as csvfile:
-            datawriter = csv.writer(csvfile, delimiter=',')
-            for i in range(len(data['x_raw'])):
-                datawriter.writerow([data['x_raw'][i],data['y_data_percent_unfold'][i],data['y_raw'][i]])
 
 
 if len(sys.argv)>1:
