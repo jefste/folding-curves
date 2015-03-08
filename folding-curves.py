@@ -29,7 +29,7 @@ T=294.15
 '''
 Parameter list used to write out final fitting table
 '''
-p_list=['C_f','m_f','C_u','m_u','m_g','D_g']
+parameter_list=['C_f','m_f','C_u','m_u','m_g','D_g']
 
 
 '''
@@ -143,37 +143,37 @@ fitting of RAW data to a folded/unfolded curve
 data_all['xfit']=np.linspace(data_all['x_raw'][0],data_all['x_raw'][-1],1000)
 
 
-#fits data to function fit_folded, returns the parameters in popt_fu
+#fits data to function fit_folded, returns the parameters in parameters_fit_raw
 ## generate the initial guess from the initial_parameters function
 print('initial paramters')
 print(initial_parameters(test_data_x,test_data_y)) 
-popt_fu,pcov_fu = curve_fit(fit_folded, data_all['x_raw'], data_all['y_raw'],p0=initial_parameters(data_all['x_raw'],data_all['y_raw'])+[3,5])
+parameters_fit_raw,param_covariance_fu = curve_fit(fit_folded, data_all['x_raw'], data_all['y_raw'],p0=initial_parameters(data_all['x_raw'],data_all['y_raw'])+[3,5])
 
 #generates points for y for the fit parameters
-data_all['y_fit_raw']=fit_folded(data_all['xfit'],*popt_fu)
+data_all['y_fit_raw']=fit_folded(data_all['xfit'],*parameters_fit_raw)
 
 '''
 Convert data to a measure of percentage unfolded
 '''
 #converts the raw data to percentage data
-data_all['y_data_percent_unfold']=fold_unfold_fraction_data(data_all['x_raw'],data_all['y_raw'],*popt_fu)
+data_all['y_data_percent_unfold']=fold_unfold_fraction_data(data_all['x_raw'],data_all['y_raw'],*parameters_fit_raw)
 
 #fits data to fold_unfold_fraction_func
-popt_fup,pcov_fup = curve_fit(fold_unfold_fraction_func, data_all['x_raw'], data_all['y_data_percent_unfold'])
+parameters_percent_unfolded,param_covariance_fup = curve_fit(fold_unfold_fraction_func, data_all['x_raw'], data_all['y_data_percent_unfold'])
 
 #generates points for y from the fit parameters for the percent unfolded curve
-data_all['y_fit_percent_unfold']=fold_unfold_fraction_func(data_all['xfit'],*popt_fup)
+data_all['y_fit_percent_unfold']=fold_unfold_fraction_func(data_all['xfit'],*parameters_percent_unfolded)
 
 
 '''
 write out parameters to be printed to table
 '''
 #adds C_m to the table
-cell_text=[['C_m',np.round_(popt_fup[0],2)]
-        ]
+cell_text=[['C_m',np.round_(parameters_percent_unfolded[0],2)]]
+
 #adds all parameters returned from fit of data
-for i in range(len(p_list)):
-    cell_text.append([p_list[i], np.round_(popt_fu[i],2) ])
+for i in range(len(parameter_list)):
+    cell_text.append([parameter_list[i], np.round_(parameters_fit_raw[i],2) ])
 
 
 '''
@@ -186,19 +186,19 @@ rcParams['font.size'] = 14
 #change font size of legend, as it was clipping the fit data
 rcParams['legend.fontsize'] = 12
 
-
+# sets up plot to be 1 row and 3 columns
 fig,((ax1,ax2,ax3))= plt.subplots(nrows=1,ncols=3)
 
-#plot data
+#plot raw data
 ax1.plot(data_all['x_raw'],data_all['y_raw'],'bo',label='data')
-#plot fit
+#plot fit of raw data
 ax1.plot(data_all['xfit'],data_all['y_fit_raw'],'r-',label='fit')
 
 
 #adds a green dashed line for the unfolded baseline
-ax1.plot(data_all['xfit'],unfold_line(data_all['xfit'],*popt_fu),'g--',label='unfolded baseline')
+ax1.plot(data_all['xfit'],unfold_line(data_all['xfit'],*parameters_fit_raw),'g--',label='unfolded baseline')
 #adds a magenta dashed line for the folded baseline
-ax1.plot(data_all['xfit'],fold_line(data_all['xfit'],*popt_fu),'m--',label='folded baseline')
+ax1.plot(data_all['xfit'],fold_line(data_all['xfit'],*parameters_fit_raw),'m--',label='folded baseline')
 
 #adds legend to the location upper left
 ax1.legend(loc='upper left')
@@ -206,23 +206,25 @@ ax1.legend(loc='upper left')
 ax1.axes.set_ylabel('Observed Parameter')
 ax1.axes.set_xlabel('Denaturant (GdnHCl in M)')
 ax1.axes.set_title('Observed Parameter vs Denaturant')
-
 #add gridlines to plot
 ax1.grid(b=True, which='both',color='0.5',linestyle='-',alpha=.3)
 
 #second plot with lables and legend
+##plot data converted to percentage unfolded
 ax2.plot(data_all['x_raw'],data_all['y_data_percent_unfold'],'bo',label='data')
+## plot fit of data converted to percentage unfolded
 ax2.plot(data_all['xfit'],data_all['y_fit_percent_unfold'],'r-',label='fit')
 ax2.legend(loc='upper left')
 ax2.axes.set_ylabel('Percent Unfolded')
 ax2.axes.set_xlabel('Denaturant (GdnHCl in M)')
 ax2.axes.set_title('Percent Unfolded vs Denaturant')
-
 #add gridlines to plot
 ax2.grid(b=True, which='both',color='0.5',linestyle='-',alpha=.3)
 
-#third 'plot', is just the table, but hides the x and y labels since they aren't needed
+#third 'plot', is just the table, 
+##scale 1, 4 stretches the row by factor of 1, and column by factor of 4
 ax3.table(cellText=cell_text,loc='center').scale(1,4)
+#hides the axes labels for x and y since they aren't needed
 ax3.axes.get_yaxis().set_visible(False)
 ax3.axes.get_xaxis().set_visible(False)
 ax3.axes.set_title('Fitting parameters')
