@@ -54,6 +54,7 @@ def getCSVfile():
     y=[]
     if len(sys.argv)>1:
         fileName=sys.argv[1]
+        #checks to see if files exists
         if os.path.isfile(fileName):
             with open(fileName,'rU') as csvFile:
                 reader=csv.reader(csvFile,delimiter=',')
@@ -70,6 +71,7 @@ def getCSVfile():
     #convert x and y as numpy arrays
     return [np.array(x),np.array(y)] 
 
+#function to fit to 2-state folded model for any raw data
 def fit_folded(x, c_f,m_f,c_u,m_u,m_g,d_g):
     unfold_line = c_u+m_u*x
     fold_line = c_f+m_f*x
@@ -77,20 +79,20 @@ def fit_folded(x, c_f,m_f,c_u,m_u,m_g,d_g):
     function_fit = (fold_line +unfold_line*exp_term)/(1+exp_term)
     return function_fit
 
-# have all parameters since they end up getting unpacked from the returned fitting parameters. 
-# Is there a way to do this to make it clearer (have less parameters to read in)? 
-# perhaps use a dictionary and just pass the dictionary in?
-
+#folded baseline of 2 state folding model
 def fold_line(x, c_f,m_f,c_u,m_u,m_g,d_g):
     return c_f+m_f*x
 
+#unfoled baseline of 2 state model
 def unfold_line(x, c_f,m_f,c_u,m_u,m_g,d_g):
     return c_u+m_u*x
 
+#function for PERCENT unfolded
 def fold_unfold_fraction_func(x, c_m, c_f,m_f,c_u,m_u,m_g,d_g):
     exp_term=np.exp(-m_g*(c_m-x)/(R*T))
     return exp_term/(1+exp_term)
 
+#converts raw data to a percentage of unfolded
 def fold_unfold_fraction_data(denaturant, observed_y, c_f,m_f,c_u,m_u,m_g,d_g):
     denaturant=np.array(denaturant)
     observed_y=np.array(observed_y)
@@ -148,7 +150,9 @@ data_all['xfit']=np.linspace(data_all['x_raw'][0],data_all['x_raw'][-1],1000)
 print('initial paramters')
 print(initial_parameters(test_data_x,test_data_y)) 
 parameters_fit_raw,param_covariance_fu = curve_fit(fit_folded, data_all['x_raw'], data_all['y_raw'],p0=initial_parameters(data_all['x_raw'],data_all['y_raw'])+[3,5])
-
+print(parameters_fit_raw)
+for item in parameters_fit_raw:
+    print item
 #generates points for y for the fit parameters
 data_all['y_fit_raw']=fit_folded(data_all['xfit'],*parameters_fit_raw)
 
