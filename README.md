@@ -41,3 +41,12 @@ To run the routine with a specified CSV file
 
 `$ python folding-curves.py my-file.csv`
 
+The routine will prompt to save the fitting parameters and fit curves to 3 separate CSV files:
+One for the fitting parameters, one for fitting curves of the raw data to a CSV, and fitting curve of the percent unfolded function.
+
+
+The name structure is such that the file names for my-file.csv would be
+ -my-file_data_percent_unfolded.csv
+ -my-file_fits.csv
+ -my-file_parameters.csv
+
