@@ -46,7 +46,7 @@ One for the fitting parameters, one for fitting curves of the raw data to a CSV,
 
 
 The name structure is such that the file names for my-file.csv would be
- -my-file_data_percent_unfolded.csv
- -my-file_fits.csv
- -my-file_parameters.csv
+ - my-file_data_percent_unfolded.csv
+ - my-file_fits.csv
+ - my-file_parameters.csv
 
